@@ -8,7 +8,7 @@ def truncated_normal(mean=0, sd=1, low=0, upp=10):
     return truncnorm(
            (low - mean) / sd, (upp - mean) / sd, loc=mean, scale=sd)
 
-@np.vectorize
+
 def sigmoid(x):
     return (1 / (1 + np.exp(-x)))
 
@@ -34,7 +34,6 @@ class Nural_Net:
         self.input_vector = 0
         self.weight_matrix_hidden = 0
         self.weight_matrix_output = 0
-        self.bias = 0
 
     def create_Weight_Martix(self):
         bias_node = 1 if self.bias else 0
@@ -49,21 +48,15 @@ class Nural_Net:
     def feed_forward(self):
 
         # print('\n input :',self.input_vector)
-                                 #(5*4)                # (4*1)
+                                       
         # print('\n befrore normalize input_vector :',self.input_vector)
         # self.input_vector = normalize(self.input_vector)
 
-        if self.bias:
-            self.input_vector = np.concatenate((self.input_vector,[[self.bias]]))
-
-         # input_vector = np.array(self.input_vector, ndmin=2 ).T
-        self.input_vector = sigmoid(self.input_vector)
+        input_vector = np.array(self.input_vector, ndmin=2 ).T
+        #self.input_vector = sigmoid(self.input_vector)
 
         iV_wmH_dot = np.dot(self.weight_matrix_hidden, self.input_vector)
         hidden_output_vector = sigmoid(iV_wmH_dot)
-
-        if self.bias:
-            hidden_output_vector = np.concatenate( (hidden_output_vector, [[self.bias]] ) )
 
         hoV_wmO_dot = np.dot(self.weight_matrix_output, hidden_output_vector)
         # output_vec = sigmoid(hoV_wmO_dot)
